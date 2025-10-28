@@ -1,0 +1,31 @@
+#include "sam.h"
+
+#define LED_PIN 20 // D6 → PA20 on MKR1010
+#define INPUT_PIN 10 // D2 → PA10
+#define LED_PIN2 10   //New pin. We want D4 -> PB10
+
+void setup() {
+
+PM->APBBMASK.reg |= PM_APBBMASK_PORT;  //Turn the PORT -section on
+
+PORT->Group[0].DIRSET.reg = (1 << LED_PIN);   //Declares LED_PIN as output on group 0
+
+PORT->Group[1].DIRSET.reg = (1 << LED_PIN2);  //Declares LED_PIN2 as output on Group 1, because it's PB and not PA.
+
+PORT->Group[0].DIRCLR.reg = (1 << INPUT_PIN); // Configure INPUT_PIN as INPUT (clear bit in DIRCLR)
+}
+
+void loop() {
+
+PORT->Group[0].OUTSET.reg = (1 << LED_PIN);   //Turns LED1 on. OUTSET = ON
+
+PORT->Group[1].OUTCLR.reg = (1 << LED_PIN2);  //Turns LED2 off. OUTCLR = OFF
+
+delay(500);
+
+PORT->Group[0].OUTCLR.reg = (1 << LED_PIN);   //Turns LED1 off
+
+PORT->Group[1].OUTSET.reg = (1 << LED_PIN2);  //Turns LED2 on
+
+delay(500);
+}

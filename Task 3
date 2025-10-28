@@ -1,0 +1,73 @@
+void setup() {
+  Serial.begin(9600);
+
+  Serial.println("Give calculation (number, operation, number)");
+
+}
+
+void loop() {
+  
+  if (Serial.available() > 0) {                                 // Check if there's any data to be read
+    
+    // 1. Read the first number
+    float num1 = Serial.parseFloat();                           //(DONE BY AI)
+
+    // 2. Find and read the operator (skipping any spaces)
+    char op = ' '; // Initialize to a space
+    while (Serial.available() > 0) {                            //(DONE BY AI)
+      char c = Serial.read(); // Read one character
+      if (c == '+' || c == '-' || c == '*' || c == '/') {
+        op = c;                                                 //(DONE BY AI)
+        break; // Found the operator, stop looking
+      }
+    }
+
+    // 3. Read the second number
+    float num2 = Serial.parseFloat();                          //(DONE BY AI)
+
+  
+    float result;
+    bool calculation_success = true;                 // Check if variables are correct
+
+    switch (op) {                                    // Make cases for every operation
+      case '+':
+        result = num1 + num2;
+        break;
+      case '-':
+        result = num1 - num2;
+        break;
+      case '*':
+        result = num1 * num2;
+        break;
+      case '/':
+        if (num2 == 0) {
+          Serial.println("Can't divide by zero");    // Make sure to not divided by 0
+          calculation_success = false;
+        } else {
+          result = num1 / num2;
+        }
+        break;
+      default:
+        Serial.println("Error: Invalid input.");
+        calculation_success = false;
+        break;
+    }
+
+    if (calculation_success) {                        // Print output
+      Serial.print("Result: ");
+      Serial.print(num1);
+      Serial.print(" ");
+      Serial.print(op);
+      Serial.print(" ");
+      Serial.print(num2);
+      Serial.print(" = ");
+      Serial.println(result);
+    }
+    
+    while (Serial.available() > 0) {                // Clear any leftover input
+      Serial.read();
+    }
+    
+    Serial.println("\nEnter a new calculation:");   // New calculation
+  }
+}

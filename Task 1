@@ -1,0 +1,14 @@
+void setup() {
+  pinMode(6, OUTPUT);             //Set pin 6 as output
+  Serial.begin(9600);             //With this line the MCU can send data to the computer and vice versa
+}
+
+void loop() {
+  int sensor = analogRead(A1);    //Create a variable
+  Serial.println(sensor);         //Print the variable value to terminal
+  
+  digitalWrite(6, HIGH);          //LED on 
+  delay(500);
+  digitalWrite(6, LOW);           //LED off
+  delay(500);
+}
